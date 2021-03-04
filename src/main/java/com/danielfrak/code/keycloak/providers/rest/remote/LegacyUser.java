@@ -19,6 +19,7 @@ public class LegacyUser {
     private Map<String, List<String>> attributes;
     private List<String> roles;
     private List<String> groups;
+    private Map<String, String> legacyUserData;
 
     public String getId() {
         return id;
@@ -100,6 +101,14 @@ public class LegacyUser {
         this.groups = groups;
     }
 
+    public Map<String, String> getLegacyUserData() {
+        return legacyUserData;
+    }
+
+    public void setLegacyUserData(Map<String, String> legacyUserData) {
+        this.legacyUserData = legacyUserData;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -119,12 +128,13 @@ public class LegacyUser {
                 Objects.equals(lastName, legacyUser.lastName) &&
                 Objects.equals(attributes, legacyUser.attributes) &&
                 Objects.equals(roles, legacyUser.roles) &&
-                Objects.equals(groups, legacyUser.groups);
+                Objects.equals(groups, legacyUser.groups) &&
+                Objects.equals(legacyUserData, legacyUser.legacyUserData);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, username, email, firstName, lastName, isEnabled, isEmailVerified, attributes,
-                roles, groups);
+                roles, groups, legacyUserData);
     }
 }

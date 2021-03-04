@@ -1,13 +1,13 @@
 package com.danielfrak.code.keycloak.providers.rest.remote;
 
+import com.danielfrak.code.keycloak.providers.rest.kafka.KafkaLegacyUser;
+import com.danielfrak.code.keycloak.providers.rest.kafka.model.UserProfileDto;
 import org.jboss.logging.Logger;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.models.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.danielfrak.code.keycloak.providers.rest.ConfigurationProperties.*;
@@ -85,6 +85,10 @@ public class UserModelFactory {
 
         getGroupModels(legacyUser, realm)
                 .forEach(userModel::joinGroup);
+
+        if (legacyUser.getLegacyUserData() != null && !legacyUser.getLegacyUserData().isEmpty()) {
+            KafkaLegacyUser.publishEvent(getLegacyUser(userModel.getId(), legacyUser));
+        }
 
         return userModel;
     }
@@ -165,5 +169,33 @@ public class UserModelFactory {
                 });
 
         return Optional.of(realmGroup);
+    }
+
+    private UserProfileDto getLegacyUser(String userId, LegacyUser legacyUser) {
+        var userProfileDto = new UserProfileDto();
+        userProfileDto.setUserId(UUID.fromString(userId));
+        userProfileDto.setFirstName(legacyUser.getLegacyUserData().get("firstName"));
+        userProfileDto.setLastName(legacyUser.getLegacyUserData().get("lastName"));
+        userProfileDto.setPhoneNumber(legacyUser.getLegacyUserData().get("phoneNumber"));
+
+        if (legacyUser.getLegacyUserData().get("birthDate").isEmpty()) {
+            userProfileDto.setBirthDate(null);
+        } else {
+            userProfileDto.setBirthDate(LocalDate.parse(legacyUser.getLegacyUserData().get("birthDate")).toString());
+        }
+
+        userProfileDto.setAddress(legacyUser.getLegacyUserData().get("address"));
+        userProfileDto.setCity(legacyUser.getLegacyUserData().get("city"));
+        userProfileDto.setPhotoPath(legacyUser.getLegacyUserData().get("photoPath"));
+        userProfileDto.setLinkedinUrl(legacyUser.getLegacyUserData().get("linkedinUrl"));
+        userProfileDto.setZipCode(legacyUser.getLegacyUserData().get("zipCode"));
+        userProfileDto.setCvPath(legacyUser.getLegacyUserData().get("cvPath"));
+        userProfileDto.setProfession(legacyUser.getLegacyUserData().get("profession"));
+        userProfileDto.setLastEducationPlace(legacyUser.getLegacyUserData().get("lastEducationPlace"));
+        userProfileDto.setSubscribeNewsletter(Boolean.parseBoolean(legacyUser.getLegacyUserData().get("isSubscribeNewsletter")));
+        userProfileDto.setDarkMode(Boolean.parseBoolean(legacyUser.getLegacyUserData().get("darkMode")));
+        userProfileDto.setReferralCode(legacyUser.getLegacyUserData().get("referralCode"));
+        userProfileDto.setReferredBy(legacyUser.getLegacyUserData().get("referredBy"));
+        return userProfileDto;
     }
 }
