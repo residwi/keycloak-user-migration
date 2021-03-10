@@ -14,8 +14,8 @@ import java.util.Properties;
 
 public class KafkaLegacyUser {
     private static final Logger LOG = Logger.getLogger(KafkaLegacyUser.class);
-    private static final String KAFKA_SERVER = "dqlab-kafka.kafka.svc.cluster.local:9092";
-    private static final String KAFKA_TOPIC = "migrate-legacy-user";
+    private static final String KAFKA_SERVER = "kafka.kafka.svc.cluster.local:9092";
+    private static final String KAFKA_TOPIC = "migrateLegacyUserEvent";
 
     private KafkaLegacyUser() {
     }
