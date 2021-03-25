@@ -13,6 +13,6 @@ public class BearerTokenRequestFilter implements ClientRequestFilter {
 
     @Override
     public void filter(ClientRequestContext requestContext) {
-        requestContext.getHeaders().add("Authorization", "Bearer " + this.token);
+        requestContext.getHeaders().add("X-Secret-Token", this.token);
     }
 }

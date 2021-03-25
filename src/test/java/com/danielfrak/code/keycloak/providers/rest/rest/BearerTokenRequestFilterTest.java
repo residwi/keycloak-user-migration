@@ -20,7 +20,6 @@ class BearerTokenRequestFilterTest {
     @Test
     void filter() {
         String token = "secret-api-token";
-        String expectedAuthorizationHeader = "Bearer " + token;
 
         BearerTokenRequestFilter requestFilter = new BearerTokenRequestFilter(token);
         MultivaluedMap<String, Object> headers = new MultivaluedMapImpl<>();
@@ -28,8 +27,8 @@ class BearerTokenRequestFilterTest {
 
         requestFilter.filter(context);
 
-        Object result = headers.getFirst("Authorization");
+        Object result = headers.getFirst("X-Secret-Token");
         assertNotNull(result);
-        assertEquals(expectedAuthorizationHeader, result.toString());
+        assertEquals(token, result.toString());
     }
 }

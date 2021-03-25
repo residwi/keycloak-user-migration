@@ -21,7 +21,7 @@ public final class ConfigurationProperties {
                     "Rest client URI (required)", "URI of the legacy system endpoints",
                     STRING_TYPE, null),
             new ProviderConfigProperty(API_TOKEN_PROPERTY,
-                    "Rest client API token", "Bearer token",
+                    "Rest client API token", "Token",
                     PASSWORD, null),
             new ProviderConfigProperty(ROLE_MAP_PROPERTY,
                     "Legacy role conversion", "Role conversion in the format 'legacyRole:newRole'",

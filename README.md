@@ -131,11 +131,11 @@ Additional configuration options are available for fine-tuning the migration.
 
 ### API Token
 
-The migration endpoint can be secured with an API token. The configured value will be sent as a bearer token in the authorization header.
+The migration endpoint can be secured with an API token. The configured value will be sent as a secret token in the `X-Secret-Token` header.
 
-If the configured token value is set to `SECRET_API_TOKEN` when making the request to the migration endpoints, the rest client will send the following authorization header:
+If the configured token value is set to `SECRET_API_TOKEN` when making the request to the migration endpoints, the rest client will send the following `X-Secret-Token` header:
 ```
-Authorization: Bearer SECRET_API_TOKEN
+X-Secret-Token: SECRET_API_TOKEN
 ```
 
 ### Legacy role conversion
