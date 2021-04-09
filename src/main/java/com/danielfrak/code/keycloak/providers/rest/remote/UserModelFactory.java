@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static com.danielfrak.code.keycloak.providers.rest.ConfigurationProperties.*;
+import static org.keycloak.models.UserModel.RequiredAction.UPDATE_PASSWORD;
 
 public class UserModelFactory {
 
@@ -89,6 +90,8 @@ public class UserModelFactory {
         if (legacyUser.getLegacyUserData() != null && !legacyUser.getLegacyUserData().isEmpty()) {
             KafkaLegacyUser.publishEvent(getLegacyUser(userModel.getId(), legacyUser));
         }
+
+        userModel.addRequiredAction(UPDATE_PASSWORD);
 
         return userModel;
     }
